@@ -1,5 +1,5 @@
 import React from "react";
-import axios from "axios";
+import API from "../../utils/API";
 import Nav from "../../components/Nav"
 import Jumbotron from "../../components/Jumbotron"
 import Container from "../../components/Container";
@@ -17,29 +17,32 @@ const test = {
 
 class SearchPage extends React.Component {
     state = {
-        value: ''
+        value: '',
+        toResults: false,
+        results:[]
     };
 
     handleChange = event => {
         this.setState({value: event.target.value});
+        console.log(this.state.value);
     }
 
     handleSubmit = event => {
         event.preventDefault();
-        //TODO:
-        let baseUrl = 'https://www.googleapis.com/books/v1'
-        let query = baseUrl + '/volumes?q=' + this.state.value;
-        console.log('handleSubmit works!')
-        axios({
-            method: 'get',
-            url: query,
-            responseType: 'stream'
-        })
-        .then(function (response) {
-            console.log(response.items[0]);
-        });
+        if (this.state.value) {
+            const title = this.state.value.trim();
+        //     alert("hahahahha!"+title);
+            API.getNewBooks(title)
+                .then(res => {
+                    console.log(res.data.items);
+                    // this.setState({
+                    // toResults: true,
+                    // results: res.data.items，
+                    // console.log(this.state.results)；
+                })
+            .catch(err => console.log(err));
+        }                             
     };
-    
     
     render() {
         return(
@@ -50,9 +53,9 @@ class SearchPage extends React.Component {
                     <h3>Book Search</h3>
                     <p>Book</p>
                     <div className="input-group mb-3">
-                        <input type="text" className="form-control" placeholder="Tile of book" aria-label="Recipient's username" aria-describedby="button-addon2"></input>
+                        <input type="text" className="form-control" placeholder="Tile of book" aria-label="Recipient's username" aria-describedby="button-addon2" onChange={this.handleChange}></input>
                         <div className="input-group-append">
-                            <Button2 className="btn btn-success search" type="button" id="button-addon2" onClick={this.handleSubmit}>Search</Button2>
+                            <Button2 className="btn btn-success search" type="button" id="button-addon2" onClick={this.handleSubmit} >Search</Button2>
                         </div>
                     </div>
                 </Container>
@@ -64,6 +67,6 @@ class SearchPage extends React.Component {
             </div>
         )
     }
-}
+};
 
 export default SearchPage;
