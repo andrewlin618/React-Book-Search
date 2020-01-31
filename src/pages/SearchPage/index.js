@@ -18,7 +18,7 @@ import './style.css';
 class SearchPage extends React.Component {
     state = {
         value: '',
-        toResults: false,
+        toResults:false,
         results:[]
     };
 
@@ -29,16 +29,20 @@ class SearchPage extends React.Component {
 
     handleSubmit = event => {
         event.preventDefault();
+        this.setState({
+            toResults: true
+        })     
         if (this.state.value) {
             const title = this.state.value.trim();
         //     alert("hahahahha!"+title);
             API.getNewBooks(title)
                 .then(res => {
                     console.log(res.data.items);
-                    this.setState({
-                    toResults: true,
-                    results: res.data.items
-                    })
+                    if (res.data.items){
+                        this.setState({
+                            results: res.data.items
+                        })                        
+                    }
                     console.log(this.state.results)
                 })
             .catch(err => console.log(err));
@@ -46,6 +50,29 @@ class SearchPage extends React.Component {
     };
     
     render() {
+        if(this.state.toResults && this.state.results.length === 0){
+            return(
+                <div>
+                    <Nav />
+                    <Jumbotron />
+                    <Container>
+                        <h3>Book Search</h3>
+                        <p>Book</p>
+                        <div className="input-group mb-3">
+                            <input type="text" className="form-control" placeholder="Tile of book" aria-label="Recipient's username" aria-describedby="button-addon2" onChange={this.handleChange}></input>
+                            <div className="input-group-append">
+                                <Button2 className="btn btn-success search" type="button" id="button-addon2" onClick={this.handleSubmit} >Search</Button2>
+                            </div>
+                        </div>
+                    </Container>
+                    <br />
+                    <Container>
+                        <h1>No results</h1>
+                    </Container>
+                </div>
+            )
+        }
+
         return(
             <div>
                 <Nav />
@@ -63,8 +90,8 @@ class SearchPage extends React.Component {
                 <br />
                 <Container>
                     {this.state.results.map(book => 
-                    <Card title={book.volumeInfo.title} authors={book.volumeInfo.authors} description={book.volumeInfo.description} image={book.volumeInfo.imageLinks.thumbnail}  
-                    link={book.volumeInfo.previewLink} />
+                        <Card title={book.volumeInfo.title} authors={book.volumeInfo.authors} description={book.volumeInfo.description} image={book.volumeInfo.imageLinks.thumbnail}  
+                        link={book.volumeInfo.previewLink} />
                     )}
                 </Container>
             </div>
