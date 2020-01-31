@@ -28,7 +28,7 @@ class SearchPage extends React.Component {
     }
 
     handleSubmit = event => {
-        event.preventDefault();
+        // event.preventDefault();
         this.setState({
             toResults: true
         })     
@@ -37,7 +37,7 @@ class SearchPage extends React.Component {
         //     alert("hahahahha!"+title);
             API.getNewBooks(title)
                 .then(res => {
-                    console.log(res.data.items);
+                    // console.log(res.data.items);
                     if (res.data.items){
                         this.setState({
                             results: res.data.items
@@ -48,16 +48,34 @@ class SearchPage extends React.Component {
             .catch(err => console.log(err));
         }                             
     };
-    
+
     render() {
-        if(this.state.toResults && this.state.results.length === 0){
+        if (!this.state.toResults) {
             return(
                 <div>
                     <Nav />
                     <Jumbotron />
                     <Container>
                         <h3>Book Search</h3>
-                        <p>Book</p>
+                        <div className="input-group mb-3">
+                            <input type="text" className="form-control" placeholder="Tile of book" aria-label="Recipient's username" aria-describedby="button-addon2" onChange={this.handleChange}></input>
+                            <div className="input-group-append">
+                                <Button2 className="btn btn-success search" type="button" id="button-addon2" onClick={this.handleSubmit} >Search</Button2>
+                            </div>
+                        </div>
+                    </Container>
+                    <br />
+                </div>
+            )
+            
+        }
+        if(this.state.toResults && this.state.results.length !== 0){
+            return(
+                <div>
+                    <Nav />
+                    <Jumbotron />
+                    <Container>
+                        <h3>Book Search</h3>
                         <div className="input-group mb-3">
                             <input type="text" className="form-control" placeholder="Tile of book" aria-label="Recipient's username" aria-describedby="button-addon2" onChange={this.handleChange}></input>
                             <div className="input-group-append">
@@ -67,7 +85,10 @@ class SearchPage extends React.Component {
                     </Container>
                     <br />
                     <Container>
-                        <h1>No results</h1>
+                        {this.state.results.map(book => 
+                            <Card key={book.id} title={book.volumeInfo.title} authors={book.volumeInfo.authors} description={book.volumeInfo.description} image={book.volumeInfo.imageLinks.thumbnail}  
+                            link={book.volumeInfo.previewLink} />
+                        )}
                     </Container>
                 </div>
             )
@@ -79,7 +100,6 @@ class SearchPage extends React.Component {
                 <Jumbotron />
                 <Container>
                     <h3>Book Search</h3>
-                    <p>Book</p>
                     <div className="input-group mb-3">
                         <input type="text" className="form-control" placeholder="Tile of book" aria-label="Recipient's username" aria-describedby="button-addon2" onChange={this.handleChange}></input>
                         <div className="input-group-append">
@@ -89,10 +109,7 @@ class SearchPage extends React.Component {
                 </Container>
                 <br />
                 <Container>
-                    {this.state.results.map(book => 
-                        <Card title={book.volumeInfo.title} authors={book.volumeInfo.authors} description={book.volumeInfo.description} image={book.volumeInfo.imageLinks.thumbnail}  
-                        link={book.volumeInfo.previewLink} />
-                    )}
+                    <h1>No results</h1>
                 </Container>
             </div>
         )
