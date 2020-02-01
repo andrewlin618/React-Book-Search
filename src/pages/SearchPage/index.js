@@ -6,6 +6,7 @@ import Container from "../../components/Container";
 import Card from "../../components/Card";
 import {Button2} from "../../components/Button"
 import './style.css';
+import bookNotPictured from "./bookNotPictured.jpg"
 
 // const test = {
 //     authors: ["Suzanne Collins"],
@@ -40,13 +41,14 @@ class SearchPage extends React.Component {
                     // console.log(res.data.items);
                     if (res.data.items){
                         this.setState({
+                            value:'',
                             results: res.data.items
                         })                        
-                    }
-                    console.log(this.state.results)
+                    }           
+                    console.log(this.state.results);
                 })
             .catch(err => console.log(err));
-        }                             
+        }              
     };
 
     render() {
@@ -86,8 +88,7 @@ class SearchPage extends React.Component {
                     <br />
                     <Container>
                         {this.state.results.map(book => 
-                            <Card key={book.id} title={book.volumeInfo.title} authors={book.volumeInfo.authors} description={book.volumeInfo.description} image={book.volumeInfo.imageLinks.thumbnail}  
-                            link={book.volumeInfo.previewLink} />
+                            <Card key={book.id || '???'} title={book.volumeInfo.title || '???'} authors={book.volumeInfo.authors || '???'} description={book.volumeInfo.description || '???'} image={book.volumeInfo.imageLinks.thumbnail || bookNotPictured} link={book.volumeInfo.previewLink || '/'}/>
                         )}
                     </Container>
                 </div>

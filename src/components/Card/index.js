@@ -27,12 +27,11 @@ class Card extends React.Component{
                         <p>Written by: <span>{this.state.authors.toString()}</span></p>
                         <img src={this.state.image} alt={this.state.title}/>
                         <br /><br />
-
                     </div>
                     <div className='col-md-8'>
                         <p>{this.state.description}</p>
                         <div style={{textAlign: 'right'}}>
-                            <Button1 className='btn btn-primary mr-1' link={this.state.link} target={this.state.target}>view</Button1>
+                            <Button1 className='btn btn-primary mr-1' link={this.state.link}>view</Button1>
                             <Button2 className='btn btn-success' onClick={this.handleSave}>save</Button2>
                         </div>
                         <br /><br />
