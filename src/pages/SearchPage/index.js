@@ -6,7 +6,7 @@ import Container from "../../components/Container";
 import Card from "../../components/Card";
 import {Button2} from "../../components/Button"
 import './style.css';
-import bookNotPictured from "./bookNotPictured.jpg"
+import bookNotPictured from "../../images/bookNotPictured.jpg"
 
 // const test = {
 //     authors: ["Suzanne Collins"],
