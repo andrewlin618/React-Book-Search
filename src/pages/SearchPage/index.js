@@ -4,7 +4,7 @@ import Nav from "../../components/Nav"
 import Jumbotron from "../../components/Jumbotron"
 import Container from "../../components/Container";
 import Card from "../../components/Card";
-import {Button2} from "../../components/Button"
+import {BtnSubmit} from "../../components/Button"
 import './style.css';
 import bookNotPictured from "../../images/bookNotPictured.jpg"
 
@@ -20,12 +20,18 @@ class SearchPage extends React.Component {
     state = {
         value: '',
         toResults:false,
-        results:[]
+        results:[],
+        isCollapsed:false
     };
 
     handleChange = event => {
         this.setState({value: event.target.value});
         console.log(this.state.value);
+    }
+
+    resetInput = () =>{
+
+        this.setState({value:''});
     }
 
     handleSubmit = event => {
@@ -41,15 +47,17 @@ class SearchPage extends React.Component {
                     // console.log(res.data.items);
                     if (res.data.items){
                         this.setState({
-                            value:'',
                             results: res.data.items
                         })                        
                     }           
                     console.log(this.state.results);
                 })
             .catch(err => console.log(err));
-        }              
+        }
+        this.resetInput();
     };
+
+
 
     render() {
         if (!this.state.toResults) {
@@ -60,9 +68,9 @@ class SearchPage extends React.Component {
                     <Container>
                         <h3>Book Search</h3>
                         <div className="input-group mb-3">
-                            <input type="text" className="form-control" placeholder="Tile of book" aria-label="Recipient's username" aria-describedby="button-addon2" onChange={this.handleChange}></input>
+                            <input type="text" className="form-control title" placeholder="Title of book" aria-label="Book's Keyword" aria-describedby="button-addon2" onChange={this.handleChange}></input>
                             <div className="input-group-append">
-                                <Button2 className="btn btn-success search" type="button" id="button-addon2" onClick={this.handleSubmit} >Search</Button2>
+                                <BtnSubmit className="btn btn-success search" type="button" id="button-addon2" onClick={this.handleSubmit} >Search</BtnSubmit>
                             </div>
                         </div>
                     </Container>
@@ -79,16 +87,17 @@ class SearchPage extends React.Component {
                     <Container>
                         <h3>Book Search</h3>
                         <div className="input-group mb-3">
-                            <input type="text" className="form-control" placeholder="Tile of book" aria-label="Recipient's username" aria-describedby="button-addon2" onChange={this.handleChange}></input>
+                            <input type="text" className="form-control title" placeholder="Title of book" aria-label="Book's Keyword" aria-describedby="button-addon2" onChange={this.handleChange}></input>
                             <div className="input-group-append">
-                                <Button2 className="btn btn-success search" type="button" id="button-addon2" onClick={this.handleSubmit} >Search</Button2>
+                                <BtnSubmit className="btn btn-success search" type="button" id="button-addon2" onClick={this.handleSubmit} >Search</BtnSubmit>
                             </div>
                         </div>
                     </Container>
                     <br />
                     <Container>
                         {this.state.results.map(book => 
-                            <Card key={book.id || '???'} title={book.volumeInfo.title || '???'} authors={book.volumeInfo.authors || '???'} description={book.volumeInfo.description || '???'} image={book.volumeInfo.imageLinks.thumbnail || bookNotPictured} link={book.volumeInfo.previewLink || '/'}/>
+                            <Card key={book.id} title={book.volumeInfo.title} authors={book.volumeInfo.authors} category={book.volumeInfo.categories[0]} description={book.volumeInfo.description}  publisher={book.volumeInfo.publisher}
+                            publishedDate={book.volumeInfo.publishedDate} image={book.volumeInfo.imageLinks.thumbnail || bookNotPictured} link={book.volumeInfo.previewLink || '/'} isCollapsed={this.state.isCollapsed}/>
                         )}
                     </Container>
                 </div>
@@ -102,9 +111,9 @@ class SearchPage extends React.Component {
                 <Container>
                     <h3>Book Search</h3>
                     <div className="input-group mb-3">
-                        <input type="text" className="form-control" placeholder="Tile of book" aria-label="Recipient's username" aria-describedby="button-addon2" onChange={this.handleChange}></input>
+                        <input type="text" className="form-control title" placeholder="Title of book" aria-label="Book's Keyword" aria-describedby="button-addon2" onChange={this.handleChange}></input>
                         <div className="input-group-append">
-                            <Button2 className="btn btn-success search" type="button" id="button-addon2" onClick={this.handleSubmit} >Search</Button2>
+                            <BtnSubmit className="btn btn-success search" type="button" id="button-addon2" onClick={this.handleSubmit} >Search</BtnSubmit>
                         </div>
                     </div>
                 </Container>

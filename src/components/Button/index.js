@@ -1,18 +1,27 @@
 import React from "react";
 import './style.css';
+import { Link } from "react-router-dom";
 
-export function Button1(props){
+export function BtnSubmit(props){
         return(
-            <a className={props.className} href={props.link} onClick={props.onClick}>
+            <button className={props.className} onClick={props.onClick} style={{fontWeight:'bold'}}>
+                {props.children}
+            </button>
+        )
+    }
+
+export function BtnView(props){
+        return(
+            <a className={props.className} href={props.link} onClick={props.onClick}  style={{fontWeight:'bold'}} target={props.target}>
                 {props.children}
             </a>
         )
     }
 
-export function Button2(props){
+export function BtnSaved(props){
         return(
-            <button className={props.className} onClick={props.onClick}>
+            <Link to='/saved' className={props.className} onClick={props.onClick} style={{fontWeight:'bold'}}>
                 {props.children}
-            </button>
+            </Link>
         )
     }

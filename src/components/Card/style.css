@@ -1,6 +1,6 @@
 img{
-    height: 150px;
-    width: 150px;
+    height: 200px;
+    width: 200px;
 }
 
 .title-text{
@@ -8,4 +8,15 @@ img{
     font-style: italic;
     font-weight: bold;
     color: black;
+}
+
+.a-text{
+    font-style: italic;
+    font-weight: bold;
+    color: black;
+}
+
+.p-text{
+    font-weight: bold;
+    line-height: 5px;
 }
