@@ -52,7 +52,10 @@ class SearchPage extends React.Component {
                     }           
                     console.log(this.state.results);
                 })
-            .catch(err => console.log(err));
+            .catch(err =>{
+                console.log(err);
+                alert("Something went wrong, please fresh the page!")
+            })
         }
         this.resetInput();
     };
@@ -79,6 +82,7 @@ class SearchPage extends React.Component {
             )
             
         }
+
         if(this.state.toResults && this.state.results.length !== 0){
             return(
                 <div>
