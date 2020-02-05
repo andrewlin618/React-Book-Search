@@ -1,12 +1,13 @@
 import React from "react";
-import API from "../../utils/API";
+import axios from "axios";
+// import API from "../../utils/API";
 import Nav from "../../components/Nav"
 import Jumbotron from "../../components/Jumbotron"
 import Container from "../../components/Container";
 import Card from "../../components/Card";
 import {BtnSubmit} from "../../components/Button"
 import './style.css';
-import bookNotPictured from "../../images/bookNotPictured.jpg"
+// import bookNotPictured from "../../images/bookNotPictured.jpg"
 
 // const test = {
 //     authors: ["Suzanne Collins"],
@@ -31,31 +32,40 @@ class SearchPage extends React.Component {
     }
 
     handleSubmit = event => {
-        // event.preventDefault();
+        event.preventDefault();
         this.setState({
             toResults: true
         })     
-        if (this.state.value) {
-            const title = this.state.value.trim();
-        //     alert("hahahahha!"+title);
-            API.getNewBooks(title)
-                .then(res => {
-                    // console.log(res.data.items);
-                    if (res.data.items){
-                        this.setState({
-                            results: res.data.items
-                        })                        
-                    }           
-                    console.log(this.state.results);
-                })
-            .catch(err =>{
-                console.log(err);
-                alert("Something went wrong, please fresh the page!")
+        // const title = this.state.value.trim();
+        console.log(this.state.value);
+        axios
+        .get("https://www.googleapis.com/books/v1/volumes?q=" + this.state.value)
+        .then(results => {
+            results.data.items.filter(
+                result =>
+                // result.volumeInfo.title  &&
+                // result.volumeInfo.authors  &&
+                (result.volumeInfo.publisher!==null)
+                // result.volumeInfo.publishedDate &&
+                // result.volumeInfo.categories &&
+                // result.volumeInfo.description &&
+                // result.volumeInfo.imageLinks &&
+                // result.volumeInfo.imageLinks.thumbnail &&
+                // result.volumeInfo.previewLink
+            );
+            console.log(results.data.items);
+            this.setState({
+                results: results.data.items
             })
+            console.log(this.state.results);
+        })
+        .catch(() =>
+            this.setState({
+                results: [],
+                message: "No New Books Found, Try a Different Query"
+            })
+        );
         }
-    };
-
-
 
     render() {
         if (!this.state.toResults) {
@@ -79,42 +89,42 @@ class SearchPage extends React.Component {
         }
 
         return(
-                <div>
-                    <Nav />
-                    <Jumbotron />
-                    <Container>
-                        <h4 style={{fontWeight:'bold'}}>BOOK SEARCH</h4>
-                        <div className="input-group mb-3">
-                            <input type="text" className="form-control title" placeholder="Title of book" aria-label="Book's Keyword" aria-describedby="button-addon2" onChange={this.handleChange}></input>
-                            <div className="input-group-append">
-                                <BtnSubmit className="btn btn-success search" type="button" id="button-addon2" onClick={this.handleSubmit} >SEARCH</BtnSubmit>
-                            </div>
+            <div>
+                <Nav />
+                <Jumbotron />
+                <Container>
+                    <h4 style={{fontWeight:'bold'}}>BOOK SEARCH</h4>
+                    <div className="input-group mb-3">
+                        <input type="text" className="form-control title" placeholder="Title of book" aria-label="Book's Keyword" aria-describedby="button-addon2" onChange={this.handleChange}></input>
+                        <div className="input-group-append">
+                            <BtnSubmit className="btn btn-success search" type="button" id="button-addon2" onClick={this.handleSubmit} >SEARCH</BtnSubmit>
                         </div>
-                    </Container>
-                    <br />
-                    {(this.state.toResults && this.state.results.length !== 0)?(
-                    <Container>
-                        <h4 style={{fontWeight:'bold'}}>SEARCH RESULTS</h4>
-                            {this.state.results.map(book => 
-                                <Card 
-                                key={book.id} 
-                                title={book.volumeInfo.title} 
-                                authors={book.volumeInfo.authors} 
-                                category={book.volumeInfo.categories[0]} 
-                                description={book.volumeInfo.description}  
-                                publisher={book.volumeInfo.publisher}
-                                publishedDate={book.volumeInfo.publishedDate} 
-                                image={book.volumeInfo.imageLinks.thumbnail || bookNotPictured} 
-                                link={book.volumeInfo.previewLink} 
-                                isCollapsed={this.state.isCollapsed}/>
-                            )}
-                    </Container>
-                    ):(
-                        <h2 className="text-center">{this.state.message}</h2>
-                    )}
-                </div>
-            )
-        }
+                    </div>
+                </Container>
+                <br />
+                {(this.state.toResults && this.state.results.length !== 0)?(
+                <Container>
+                    <h4 style={{fontWeight:'bold'}}>SEARCH RESULTS</h4>
+                        {this.state.results.map(book => 
+                            <Card 
+                            key={book.id} 
+                            title={book.volumeInfo.title} 
+                            authors={book.volumeInfo.authors} 
+                            category={book.volumeInfo.categories} 
+                            description={book.volumeInfo.description}  
+                            publisher={book.volumeInfo.publisher}
+                            publishedDate={book.volumeInfo.publishedDate} 
+                            image={book.volumeInfo.imageLinks.thumbnail} 
+                            link={book.volumeInfo.previewLink} 
+                            isCollapsed={this.state.isCollapsed}/>
+                        )}
+                </Container>
+                ):(
+                    <h2 className="text-center">{this.state.message}</h2>
+                )}
+            </div>
+        )
+    }
 };
 
 export default SearchPage;

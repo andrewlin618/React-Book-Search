@@ -3,17 +3,27 @@ import Nav from "../../components/Nav"
 import Jumbotron from "../../components/Jumbotron"
 import Container from "../../components/Container";
 
-function SearchPage(){
-    return(
-        <div>
-            <Nav />
-            <Jumbotron />
-            <Container>
-                <h3>Saved Books</h3>
-                <p>Book</p>
-            </Container>
-        </div>
-    )
+class SavedPage extends React.Component {
+    state = {
+        
+    }
+
+    handleDelete(){
+    }
+
+
+    render(){
+        return(
+            <div>
+                <Nav />
+                <Jumbotron />
+                <Container>
+                <h4 style={{fontWeight:'bold'}}>SAVED BOOKS</h4>
+
+                </Container>
+            </div>
+        )
+    }
 }
 
-export default SearchPage;
+export default SavedPage;
