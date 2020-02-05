@@ -21,17 +21,13 @@ class SearchPage extends React.Component {
         value: '',
         toResults:false,
         results:[],
-        isCollapsed:false
+        isCollapsed:false,
+        message:'Try to search something else...'
     };
 
     handleChange = event => {
         this.setState({value: event.target.value});
         console.log(this.state.value);
-    }
-
-    resetInput = () =>{
-
-        this.setState({value:''});
     }
 
     handleSubmit = event => {
@@ -57,7 +53,6 @@ class SearchPage extends React.Component {
                 alert("Something went wrong, please fresh the page!")
             })
         }
-        this.resetInput();
     };
 
 
@@ -69,11 +64,11 @@ class SearchPage extends React.Component {
                     <Nav />
                     <Jumbotron />
                     <Container>
-                        <h3>Book Search</h3>
+                        <h4 style={{fontWeight:'bold'}}>BOOK SEARCH</h4>
                         <div className="input-group mb-3">
                             <input type="text" className="form-control title" placeholder="Title of book" aria-label="Book's Keyword" aria-describedby="button-addon2" onChange={this.handleChange}></input>
                             <div className="input-group-append">
-                                <BtnSubmit className="btn btn-success search" type="button" id="button-addon2" onClick={this.handleSubmit} >Search</BtnSubmit>
+                                <BtnSubmit className="btn btn-success search" type="button" id="button-addon2" onClick={this.handleSubmit} >SEARCH</BtnSubmit>
                             </div>
                         </div>
                     </Container>
@@ -83,51 +78,43 @@ class SearchPage extends React.Component {
             
         }
 
-        if(this.state.toResults && this.state.results.length !== 0){
-            return(
+        return(
                 <div>
                     <Nav />
                     <Jumbotron />
                     <Container>
-                        <h3>Book Search</h3>
+                        <h4 style={{fontWeight:'bold'}}>BOOK SEARCH</h4>
                         <div className="input-group mb-3">
                             <input type="text" className="form-control title" placeholder="Title of book" aria-label="Book's Keyword" aria-describedby="button-addon2" onChange={this.handleChange}></input>
                             <div className="input-group-append">
-                                <BtnSubmit className="btn btn-success search" type="button" id="button-addon2" onClick={this.handleSubmit} >Search</BtnSubmit>
+                                <BtnSubmit className="btn btn-success search" type="button" id="button-addon2" onClick={this.handleSubmit} >SEARCH</BtnSubmit>
                             </div>
                         </div>
                     </Container>
                     <br />
+                    {(this.state.toResults && this.state.results.length !== 0)?(
                     <Container>
-                        {this.state.results.map(book => 
-                            <Card key={book.id} title={book.volumeInfo.title} authors={book.volumeInfo.authors} category={book.volumeInfo.categories[0]} description={book.volumeInfo.description}  publisher={book.volumeInfo.publisher}
-                            publishedDate={book.volumeInfo.publishedDate} image={book.volumeInfo.imageLinks.thumbnail || bookNotPictured} link={book.volumeInfo.previewLink || '/'} isCollapsed={this.state.isCollapsed}/>
-                        )}
+                        <h4 style={{fontWeight:'bold'}}>SEARCH RESULTS</h4>
+                            {this.state.results.map(book => 
+                                <Card 
+                                key={book.id} 
+                                title={book.volumeInfo.title} 
+                                authors={book.volumeInfo.authors} 
+                                category={book.volumeInfo.categories[0]} 
+                                description={book.volumeInfo.description}  
+                                publisher={book.volumeInfo.publisher}
+                                publishedDate={book.volumeInfo.publishedDate} 
+                                image={book.volumeInfo.imageLinks.thumbnail || bookNotPictured} 
+                                link={book.volumeInfo.previewLink} 
+                                isCollapsed={this.state.isCollapsed}/>
+                            )}
                     </Container>
+                    ):(
+                        <h2 className="text-center">{this.state.message}</h2>
+                    )}
                 </div>
             )
         }
-
-        return(
-            <div>
-                <Nav />
-                <Jumbotron />
-                <Container>
-                    <h3>Book Search</h3>
-                    <div className="input-group mb-3">
-                        <input type="text" className="form-control title" placeholder="Title of book" aria-label="Book's Keyword" aria-describedby="button-addon2" onChange={this.handleChange}></input>
-                        <div className="input-group-append">
-                            <BtnSubmit className="btn btn-success search" type="button" id="button-addon2" onClick={this.handleSubmit} >Search</BtnSubmit>
-                        </div>
-                    </div>
-                </Container>
-                <br />
-                <Container>
-                    <h1>No results</h1>
-                </Container>
-            </div>
-        )
-    }
 };
 
 export default SearchPage;
