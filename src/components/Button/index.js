@@ -18,7 +18,7 @@ export function BtnView(props){
         )
     }
 
-export function BtnSaved(props){
+export function BtnSave(props){
         return(
             <Link to='/saved' className={props.className} onClick={props.onClick} style={{fontWeight:'bold'}}>
                 {props.children}

@@ -4,9 +4,11 @@ import axios from "axios";
 import Nav from "../../components/Nav"
 import Jumbotron from "../../components/Jumbotron"
 import Container from "../../components/Container";
-import Card from "../../components/Card";
-import {BtnSubmit} from "../../components/Button"
+import Book from "../../components/Book";
+import {BtnSubmit,BtnSave} from "../../components/Button"
 import './style.css';
+
+const MAXRESULTS = 5;
 // import bookNotPictured from "../../images/bookNotPictured.jpg"
 
 // const test = {
@@ -23,7 +25,7 @@ class SearchPage extends React.Component {
         toResults:false,
         results:[],
         isCollapsed:false,
-        message:'Try to search something else...'
+        message:''
     };
 
     handleChange = event => {
@@ -39,33 +41,45 @@ class SearchPage extends React.Component {
         // const title = this.state.value.trim();
         console.log(this.state.value);
         axios
-        .get("https://www.googleapis.com/books/v1/volumes?q=" + this.state.value)
+        .get("https://www.googleapis.com/books/v1/volumes?q=" + this.state.value + '&maxResults=' + MAXRESULTS)
         .then(results => {
-            results.data.items.filter(
-                result =>
-                // result.volumeInfo.title  &&
-                // result.volumeInfo.authors  &&
-                (result.volumeInfo.publisher!==null)
-                // result.volumeInfo.publishedDate &&
-                // result.volumeInfo.categories &&
-                // result.volumeInfo.description &&
-                // result.volumeInfo.imageLinks &&
-                // result.volumeInfo.imageLinks.thumbnail &&
-                // result.volumeInfo.previewLink
-            );
             console.log(results.data.items);
-            this.setState({
-                results: results.data.items
-            })
+            if (results.data.items) {
+                this.setState({
+                    results: results.data.items,
+                    message:''
+                })
+            }
+            else{
+                this.setState({
+                    results: [],
+                    message: "No Books Found, Try a Different Query"
+                })
+            }
             console.log(this.state.results);
         })
         .catch(() =>
             this.setState({
                 results: [],
-                message: "No New Books Found, Try a Different Query"
+                message: "API Call Failed..."
             })
         );
-        }
+    }
+
+    // handleBookSave = id => {
+    //     const book = this.state.results.find(book => book.id === id);
+
+    //     API.saveBook({
+    //         googleId: book.volumeInfo.id,
+    //         title: book.volumeInfo.title,
+    //         // subtitle: book.volumeInfo.subtitle,
+    //         link: book.volumeInfo.infoLink,
+    //         authors: book.volumeInfo.authors,
+    //         description: book.volumeInfo.description,
+    //         image: book.volumeInfo.image.thumbnail
+    //     }).then(() => this.getBooks());
+    // };
+    
 
     render() {
         if (!this.state.toResults) {
@@ -102,26 +116,28 @@ class SearchPage extends React.Component {
                     </div>
                 </Container>
                 <br />
-                {(this.state.toResults && this.state.results.length !== 0)?(
-                <Container>
+                    <Container>
                     <h4 style={{fontWeight:'bold'}}>SEARCH RESULTS</h4>
-                        {this.state.results.map(book => 
-                            <Card 
-                            key={book.id} 
-                            title={book.volumeInfo.title} 
-                            authors={book.volumeInfo.authors} 
-                            category={book.volumeInfo.categories} 
-                            description={book.volumeInfo.description}  
-                            publisher={book.volumeInfo.publisher}
-                            publishedDate={book.volumeInfo.publishedDate} 
-                            image={book.volumeInfo.imageLinks.thumbnail} 
-                            link={book.volumeInfo.previewLink} 
-                            isCollapsed={this.state.isCollapsed}/>
-                        )}
-                </Container>
-                ):(
+                    {this.state.results.map(book => 
+                        <Book 
+                        key={book.id} 
+                        googleId={book.id} 
+                        title={book.volumeInfo.title} 
+                        authors={book.volumeInfo.authors}
+                        categories={book.volumeInfo.categories} 
+                        publisher={book.volumeInfo.publisher}
+                        publishedDate={book.volumeInfo.publishedDate} 
+                        image={book.volumeInfo.imageLinks.thumbnail} 
+                        description={book.volumeInfo.description}  
+                        link={book.volumeInfo.previewLink} 
+                        isCollapsed={this.state.isCollapsed}
+                        target="_blank"
+                        Button={()=>(
+                            <BtnSave className='btn btn-success card-btn' onClick={this.handleBookSave}>SAVE</BtnSave>
+                        )}/>
+                    )}
                     <h2 className="text-center">{this.state.message}</h2>
-                )}
+                    </Container>
             </div>
         )
     }
