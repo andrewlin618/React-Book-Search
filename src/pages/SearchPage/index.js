@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "axios";
-// import API from "../../utils/API";
+import API from "../../utils/API";
 import Nav from "../../components/Nav"
 import Jumbotron from "../../components/Jumbotron"
 import Container from "../../components/Container";
@@ -8,7 +8,7 @@ import Book from "../../components/Book";
 import {BtnSubmit,BtnSave} from "../../components/Button"
 import './style.css';
 
-const MAXRESULTS = 5;
+const MAXRESULTS = 40;
 // import bookNotPictured from "../../images/bookNotPictured.jpg"
 
 // const test = {
@@ -40,13 +40,26 @@ class SearchPage extends React.Component {
         })     
         // const title = this.state.value.trim();
         console.log(this.state.value);
-        axios
-        .get("https://www.googleapis.com/books/v1/volumes?q=" + this.state.value + '&maxResults=' + MAXRESULTS)
-        .then(results => {
-            console.log(results.data.items);
-            if (results.data.items) {
+        axios.get("https://www.googleapis.com/books/v1/volumes?q=" + this.state.value + '&maxResults=' + MAXRESULTS)
+        .then(res => {
+            console.log(res.data.items);
+            var validBooks = res.data.items.filter( result =>
+                result.id &&
+                result.volumeInfo.title &&
+                result.volumeInfo.authors &&
+                result.volumeInfo.categories &&
+                result.volumeInfo.publisher &&
+                result.volumeInfo.publishedDate &&
+                result.volumeInfo.imageLinks &&
+                result.volumeInfo.imageLinks.thumbnail &&
+                result.volumeInfo.infoLink &&
+                result.volumeInfo.description &&
+                result.volumeInfo.previewLink
+            )
+            console.log(validBooks);
+            if (validBooks) {
                 this.setState({
-                    results: results.data.items,
+                    results: validBooks,
                     message:''
                 })
             }
@@ -66,20 +79,26 @@ class SearchPage extends React.Component {
         );
     }
 
-    // handleBookSave = id => {
-    //     const book = this.state.results.find(book => book.id === id);
+    handleBookSave = (id) => {
+        const book = this.state.results.find(book => book.id === id);
+        const bookData = {
+            googleId:book.id,
+            title:book.volumeInfo.title,
+            authors:book.volumeInfo.authors,
+            categories:book.volumeInfo.categories,
+            publisher:book.volumeInfo.publisher,
+            publishedDate:book.volumeInfo.publishedDate,
+            image:book.volumeInfo.imageLinks.thumbnail,
+            description:book.volumeInfo.description, 
+            link:book.volumeInfo.previewLink
+        };
 
-    //     API.saveBook({
-    //         googleId: book.volumeInfo.id,
-    //         title: book.volumeInfo.title,
-    //         // subtitle: book.volumeInfo.subtitle,
-    //         link: book.volumeInfo.infoLink,
-    //         authors: book.volumeInfo.authors,
-    //         description: book.volumeInfo.description,
-    //         image: book.volumeInfo.image.thumbnail
-    //     }).then(() => this.getBooks());
-    // };
-    
+        console.log(book)
+        console.log(bookData)
+        API.saveBook(bookData)
+        .then(() => console.log("succeeded!"))
+
+    };
 
     render() {
         if (!this.state.toResults) {
@@ -132,9 +151,10 @@ class SearchPage extends React.Component {
                         link={book.volumeInfo.previewLink} 
                         isCollapsed={this.state.isCollapsed}
                         target="_blank"
-                        Button={()=>(
-                            <BtnSave className='btn btn-success card-btn' onClick={this.handleBookSave}>SAVE</BtnSave>
-                        )}/>
+                        Buttonaaa={()=>(
+                            <BtnSave onClick={() => this.handleBookSave(book.id)} isSaved = {false}></BtnSave>
+                        )}
+                        />
                     )}
                     <h2 className="text-center">{this.state.message}</h2>
                     </Container>
