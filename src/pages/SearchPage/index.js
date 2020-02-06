@@ -8,7 +8,7 @@ import Book from "../../components/Book";
 import {BtnSubmit,BtnSave} from "../../components/Button"
 import './style.css';
 
-const MAXRESULTS = 40;
+const MAXRESULTS = 10;
 // import bookNotPictured from "../../images/bookNotPictured.jpg"
 
 // const test = {
@@ -42,34 +42,33 @@ class SearchPage extends React.Component {
         console.log(this.state.value);
         axios.get("https://www.googleapis.com/books/v1/volumes?q=" + this.state.value + '&maxResults=' + MAXRESULTS)
         .then(res => {
-            console.log(res.data.items);
-            var validBooks = res.data.items.filter( result =>
-                result.id &&
-                result.volumeInfo.title &&
-                result.volumeInfo.authors &&
-                result.volumeInfo.categories &&
-                result.volumeInfo.publisher &&
-                result.volumeInfo.publishedDate &&
-                result.volumeInfo.imageLinks &&
-                result.volumeInfo.imageLinks.thumbnail &&
-                result.volumeInfo.infoLink &&
-                result.volumeInfo.description &&
-                result.volumeInfo.previewLink
-            )
-            console.log(validBooks);
-            if (validBooks) {
+            console.log("res.data.items"+res.data.items);
+            if(!res.data.items){
                 this.setState({
-                    results: validBooks,
-                    message:''
+                    results: [],
+                    message: "No Books Found..."
                 })
             }
             else{
+                var validBooks = res.data.items.filter( result =>
+                    result.id &&
+                    result.volumeInfo.title &&
+                    result.volumeInfo.authors &&
+                    result.volumeInfo.categories &&
+                    result.volumeInfo.publisher &&
+                    result.volumeInfo.publishedDate &&
+                    result.volumeInfo.imageLinks &&
+                    result.volumeInfo.imageLinks.thumbnail &&
+                    result.volumeInfo.infoLink &&
+                    result.volumeInfo.description &&
+                    result.volumeInfo.previewLink
+                )        
                 this.setState({
-                    results: [],
-                    message: "No Books Found, Try a Different Query"
-                })
+                    results: validBooks,
+                    message:''
+                })          
             }
-            console.log(this.state.results);
+            console.log('validBooks'+validBooks);
         })
         .catch(() =>
             this.setState({
