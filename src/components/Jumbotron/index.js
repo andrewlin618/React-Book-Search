@@ -5,8 +5,8 @@ function Jumbotron(){
     return(
         <div className="jumbotron jumbotron-fluid">
             <div className="container">
-                <h1 className="display-4">React Google Books Search</h1>
-                <p className="lead">Search for and Save for Interest </p>
+                <h1 className="display-4">Andrew's Google Books Search</h1>
+                <p className="lead">Search Books for Interest </p>
             </div>
         </div>
     )

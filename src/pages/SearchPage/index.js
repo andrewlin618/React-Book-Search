@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "axios";
-import API from "../../utils/API";
+// import API from "../../utils/API";
 import Nav from "../../components/Nav"
 import Jumbotron from "../../components/Jumbotron"
 import Container from "../../components/Container";
@@ -79,23 +79,24 @@ class SearchPage extends React.Component {
     }
 
     handleBookSave = (id) => {
-        const book = this.state.results.find(book => book.id === id);
-        const bookData = {
-            googleId:book.id,
-            title:book.volumeInfo.title,
-            authors:book.volumeInfo.authors,
-            categories:book.volumeInfo.categories,
-            publisher:book.volumeInfo.publisher,
-            publishedDate:book.volumeInfo.publishedDate,
-            image:book.volumeInfo.imageLinks.thumbnail,
-            description:book.volumeInfo.description, 
-            link:book.volumeInfo.previewLink
-        };
+        alert("Book Shelf Under Construction...")
+        // const book = this.state.results.find(book => book.id === id);
+        // const bookData = {
+        //     googleId:book.id,
+        //     title:book.volumeInfo.title,
+        //     authors:book.volumeInfo.authors,
+        //     categories:book.volumeInfo.categories,
+        //     publisher:book.volumeInfo.publisher,
+        //     publishedDate:book.volumeInfo.publishedDate,
+        //     image:book.volumeInfo.imageLinks.thumbnail,
+        //     description:book.volumeInfo.description, 
+        //     link:book.volumeInfo.previewLink
+        // };
 
-        console.log(book)
-        console.log(bookData)
-        API.saveBook(bookData)
-        .then(() => console.log("succeeded!"))
+        // console.log(book)
+        // console.log(bookData)
+        // API.saveBook(bookData)
+        // .then(() => console.log("succeeded!"))
 
     };
 
@@ -108,7 +109,7 @@ class SearchPage extends React.Component {
                     <Container>
                         <h4 style={{fontWeight:'bold'}}>BOOK SEARCH</h4>
                         <div className="input-group mb-3">
-                            <input type="text" className="form-control title" placeholder="Title of book" aria-label="Book's Keyword" aria-describedby="button-addon2" onChange={this.handleChange}></input>
+                            <input type="text" className="form-control title" placeholder="key words in the title" aria-label="Book's Keyword" aria-describedby="button-addon2" onChange={this.handleChange}></input>
                             <div className="input-group-append">
                                 <BtnSubmit className="btn btn-success search" type="button" id="button-addon2" onClick={this.handleSubmit} >SEARCH</BtnSubmit>
                             </div>
@@ -127,7 +128,7 @@ class SearchPage extends React.Component {
                 <Container>
                     <h4 style={{fontWeight:'bold'}}>BOOK SEARCH</h4>
                     <div className="input-group mb-3">
-                        <input type="text" className="form-control title" placeholder="Title of book" aria-label="Book's Keyword" aria-describedby="button-addon2" onChange={this.handleChange}></input>
+                        <input type="text" className="form-control title" placeholder="key words in the title" aria-label="Book's Keyword" aria-describedby="button-addon2" onChange={this.handleChange}></input>
                         <div className="input-group-append">
                             <BtnSubmit className="btn btn-success search" type="button" id="button-addon2" onClick={this.handleSubmit} >SEARCH</BtnSubmit>
                         </div>
