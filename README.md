@@ -50,7 +50,7 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 ## Tech I Used
 * MERN stack development:
   -  MongoDB: A document-based open source database.
-  -  Express: A web applcication framework for Node.js (for routing).
+  -  Express: A web application framework for Node.js (for routing).
   -  React: A JS front-end library for building user interfaces.
   -  Node.js: A JS run-time environment.
   
