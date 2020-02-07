@@ -48,14 +48,17 @@ Your app is ready to be deployed!
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
 ## Tech I Used
-* React 
+* MERN stack development:
+  -  MongoDB: A document-based open source database.
+  -  Express: A web applcication framework for Node.js (for routing).
+  -  React: A JS front-end library for building user interfaces.
+  -  Node.js: A JS run-time environment.
+  
 * React bootstrap
 * React Router
 * Axios
 * Responsive design
-
-## In Process
-Now I am working on the backend to save the books from search.
+* Heroku (for deployment)
 
 
 ## API I Used
