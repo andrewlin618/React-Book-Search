@@ -1,6 +1,6 @@
 <img src="src/images/screenshot.png" height=300px alt="Pokemon"></img>
 
-# React-Book-Search (front-end onlu)
+# React-Book-Search (front-end only)
 A web app that allow you to search book from google books API.
 
 After you entered the key words and clicked submit, it will return books from google books API, filtering only books with title, authors, categories, publisher, publishedDate, image and description.
